@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -34,7 +35,13 @@
   <!--[if lt IE 7]>
     <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
   <![endif]-->
-
+<script>
+	function logout(){
+		document.cookie = 'user=;';
+		alert(document.cookie);
+		location.href="signup_login.html";
+	}
+</script>
   <div id="wrapper">
 
     <!-- Sidebar -->
@@ -84,7 +91,7 @@
       <div class="container-fluid">
         <form>
           <div class="form-group">
-            <a href="signup_login.html" class="btn btn-default">Logout</a>
+            <input type='button' value="Logout" onclick="logout();" class="btn btn-default"></input>                    
           </div>
           <div class="form-group">
             <label for="name">Name</label>
