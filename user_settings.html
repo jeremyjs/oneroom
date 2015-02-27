@@ -32,13 +32,17 @@
   <![endif]-->
 </head>
 <body>
+<script>
+	if(document.cookie.indexOf("user=;") > -1){
+		location.href='signup_login.html';
+	} 
+</script>
   <!--[if lt IE 7]>
     <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
   <![endif]-->
 <script>
 	function logout(){
-		document.cookie = 'user=;';
-		alert(document.cookie);
+		document.cookie = "user=; expires=Thu, 01-Jan-69 00:00:01 GMT;";
 		location.href="signup_login.html";
 	}
 </script>

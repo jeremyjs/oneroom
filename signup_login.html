@@ -33,29 +33,27 @@
 
 <body>
  <script>
-	
-	function setCookie(user) {
-	    	document.cookie="user="+user;
-	}
+
 
 	function login(){
 		var email = document.getElementById("lemail").value;
 		var pass = document.getElementById("lpass").value;
 		$.ajax({
-			url: 'http://104.254.216.237/oneroom/phpscripts/login.php?username='+email+'&password='+pass,
-			dataType: "json",
+			url: 'http://104.254.216.237/oneroom/phpscripts/login.php?email='+email+'&password='+pass,
+			//dataType: "json",
 			success: function (response) {
-				alert(response);
-				//alert("you logged in!");
+				if(response.localeCompare("You are logged in")==0){
+					document.cookie="user="+email;
+					location.href='index.html';
+				}else{
+					alert("No user with those credentials exists.");
+				}
+				
 		    },
 		    error: function(XMLHttpRequest, textStatus, errorThrown){
 				alert("Status: " + textStatus); alert("Error: " +errorThrown);
 		    }
-		});
-		//alert('did ajax call');	
-		setCookie(email);
-		//location.href='index.html';
-		
+		});		
 	}
 	
 	function signup(){
@@ -63,21 +61,21 @@
 		var email = document.getElementById("semail").value;
 		var pass = document.getElementById("spass").value;
 		$.ajax({
-		   url: 'http://104.254.216.237/oneroom/phpscripts/register.php?username='+email+'&password='+pass+'&email='+email,
-		      success: function (response) {//response is value returned from php (for your example it's "bye bye"
-		           //alert(response);
-				   alert("You are now registered!");
+		   url: 'http://104.254.216.237/oneroom/phpscripts/register.php?name='+name+'&password='+pass+'&email='+email,
+		      success: function (response) {
+		          if(parseInt(response)>=0){
+				alert("You are now Registered!");
+				document.cookie="user="+email;
+				location.href='index.html';
+			  }else{
+				alert("A user with that email already exists!");
+			  }
 		      },
 		      error: function(XMLHttpRequest, textStatus, errorThrown){
 		           alert("Status: " + textStatus); alert("Error: " +errorThrown);
 		      }
 		      										  
-		});
-		//alert('did ajax call');
-		setCookie(email);
-		//location.href='index.html';
-
-		
+		});		
 	}
   </script>
   <div class="container">
