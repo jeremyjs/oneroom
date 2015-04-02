@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
@@ -30,7 +30,54 @@
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
   <![endif]-->
 </head>
+
 <body>
+ <script>
+
+
+	function login(){
+		var email = document.getElementById("lemail").value;
+		var pass = document.getElementById("lpass").value;
+		$.ajax({
+			url: 'http://104.254.216.237/oneroom/phpscripts/login.php?email='+email+'&password='+pass,
+			//dataType: "json",
+			success: function (response) {
+				if(response.localeCompare("You are logged in")==0){
+					document.cookie="user="+email;
+					location.href='index.html';
+				}else{
+					alert("No user with those credentials exists.");
+				}
+				
+		    },
+		    error: function(XMLHttpRequest, textStatus, errorThrown){
+				alert("Status: " + textStatus); alert("Error: " +errorThrown);
+		    }
+		});		
+	}
+	
+	function signup(){
+		var name = document.getElementById("sname").value;
+		var email = document.getElementById("semail").value;
+		var pass = document.getElementById("spass").value;
+		$.ajax({
+		   url: 'http://104.254.216.237/oneroom/phpscripts/register.php?name='+name+'&password='+pass+'&email='+email,
+		      success: function (response) {
+		          if(parseInt(response)>=0){
+				alert("You are now Registered!");
+				document.cookie="user="+email;
+				location.href='index.html';
+			  }else{
+				alert("A user with that email already exists!");
+			  }
+		      },
+		      error: function(XMLHttpRequest, textStatus, errorThrown){
+		           alert("Status: " + textStatus); alert("Error: " +errorThrown);
+		      }
+		      										  
+		});		
+	}
+  </script>
   <div class="container">
     <div class="row">
       <div class="col-md-4 col-md-offset-4">
@@ -48,27 +95,28 @@
               <p class="notice"></p>
               <form role="form" hidden="hidden" class="form signup">
                 <div class="form-group">
-                  <input type="text" placeholder="Name" class="form-control name"/>
+                  <input type="text" placeholder="Name" id="sname" class="form-control name"/>
                 </div>
                 <div class="form-group">
-                  <input type="email" placeholder="Email" class="form-control email"/>
+                  <input type="email" placeholder="Email" id="semail" class="form-control email"/>
                 </div>
                 <div class="form-group">
-                  <input type="password" placeholder="Password" class="form-control password"/>
+                  <input type="password" placeholder="Password" id="spass" class="form-control password"/>
                 </div>
                 <div class="actions">
-                  <button class="btn btn-default signup">Sign Up</button>
+                  <input class="btn btn-default signup" id='Signup' type='button' value='Signup' onclick="signup();"></input>
                 </div>
               </form>
               <form class="form login">
                 <div class="form-group">
-                  <input type="email" placeholder="Email" class="form-control email"/>
+                  <input type="email" placeholder="Email" id="lemail" class="form-control email"/>
                 </div>
                 <div class="form-group">
-                  <input type="password" placeholder="Password" class="form-control password"/>
+                  <input type="password" placeholder="Password" id="lpass" class="form-control password"/>
                 </div>
                 <div class="actions">
-                  <button class="btn btn-default login">Log In</button>
+                  <input class="btn btn-default login" id='Login' type='button' value='Login' onclick="login();"></input>
+		  
                 </div>
               </form>
             </div>
@@ -96,3 +144,4 @@
   </script>
 </body>
 </html>
+
