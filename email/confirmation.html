@@ -1,0 +1,54 @@
+<html>
+  <head>
+    <style type="text/css">
+    table table {
+      width: 600px !important;
+    }
+    table div + div { /* main content */
+      width: 65%;
+      float: left;
+    }
+    table div + div + div { /* sidebar */
+      width: 33%;
+      float: right;
+    }
+    table div + div + div + div { /* footer */
+      width: 100%;
+      float: none;
+      clear: both;
+    }
+
+    @media (max-width: 630px) {
+      table table {
+        width: 96% !important;
+      }
+      table div {
+        float: none !important;
+        width: 100% !important;
+      }
+    }
+    </style>
+  </head>
+  <body style="margin: 0; padding: 0; background: #ccc;">
+    <table cellpadding=0 cellspacing=0 style="width: 100%;"><tr><td style="padding: 12px 2%;">
+      <table cellpadding=0 cellspacing=0 style="margin: 0 auto; background: #fff; width: 96%;"><tr><td style="padding: 12px 2%;">
+      <div>
+        <h1>Congratulations!</h1>
+      </div>
+      <div>
+        <h2 style="margin-top: 0;">Registration Complete</h2>
+        <p>Your account has been created successfully. Welcome to OneRoom! Now, a few words from Kanye West.</p>
+        <img width="300px" src="http://fc06.deviantart.net/fs70/i/2012/160/4/8/through_the_wire_by_marwash-d52v22x.jpg">
+        <p>I think that's a responsibility that I have, to push possibilities, to show people, this is the level that things could be at. So when you get something that has the name Kanye West on it, it's supposed to be pushing the furthest possibilities. I will be the leader of a company that ends up being worth billions of dollars, because I got the answers. I understand culture. I am the nucleus.</p>
+      </div>
+      <div>
+        <!-- <h2 style="margin-top: 0;">Sidebar</h2>
+        <p>Donec tincidunt tincidunt nunc, eget pulvinar risus sodales eu.</p> -->
+      </div>
+      <div style="border-top: solid 1px #ccc;">
+        <p>Copyright &copy; OneRoom 2015</p>
+      </div>
+      </td></tr></table>
+    </td></tr></table>
+  </body>
+</html>

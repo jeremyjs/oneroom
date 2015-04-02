@@ -27,4 +27,6 @@ $(function() {
     e.preventDefault();
     $("#wrapper").toggleClass("toggled");
   });
+
+  $(".bs-switch").bootstrapSwitch();
 });

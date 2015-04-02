@@ -17,6 +17,7 @@
   <!-- Custom CSS -->
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/bootstrap-switch.css">
   <link rel="stylesheet" href="css/simple-sidebar.css">
   <link rel="stylesheet" href="css/font-awesome.css">
   <link rel="stylesheet" href="css/main.css">
@@ -89,7 +90,8 @@
               <p>Setting: On</p>
               <div class="actions">
                 <a class="btn btn-primary" href="lights_edit.html" role="button">Edit</a>
-                <a class="btn btn-primary" href="#" role="button">Toggle Now</a>
+                <input class="bs-switch hidden" type="checkbox" name="lights-on" checked>
+                <!-- <a class="btn btn-primary" href="#" role="button">Toggle Now</a> -->
               </div>
             </div>
           </div>
@@ -150,6 +152,7 @@
   <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
   <script src="js/jquery.js"></script>
   <script src="js/bootstrap.min.js"></script>
+  <script src="js/bootstrap-switch.js"></script>
   <script src="js/plugins.js"></script>
   <script src="js/main.js"></script>
   <script>
