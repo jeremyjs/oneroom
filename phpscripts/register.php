@@ -4,12 +4,13 @@
 	
 	if (isset($_GET['name']) && isset($_GET['password']) && isset($_GET['email'])){
         $name = $_GET['name'];
-		$email = $_GET['email'];
+	$email = $_GET['email'];
         $password = $_GET['password'];
-	   $password = hash('sha512',$password);
  	
         $query = "INSERT INTO `user` (name, password, email) VALUES ('$name', '$password', '$email')";
         $result = mysqli_query($connection, $query);
+
+	$password = hash('sha512',$password);
         if($result){
 		 $message = 'test';
 			echo "1";

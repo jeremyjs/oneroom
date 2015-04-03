@@ -1,11 +1,5 @@
 /*! HTML5 Boilerplate v4.3.0 | MIT License | http://h5bp.com/ */
 
-/*
- * What follows is the result of much research on cross-browser styling.
- * Credit left inline and big thanks to Nicolas Gallagher, Jonathan Neal,
- * Kroc Camen, and the H5BP dev community and team.
- */
-
 /* ==========================================================================
    Base styles: opinionated defaults
    ========================================================================== */
@@ -321,6 +315,12 @@
   color: black;
 }
 
+/* misc elements */
+
+.remove:hover {
+  cursor: pointer;
+}
+
 /* bootstrap navtabs */
 
  .panel.tab-panel {
@@ -331,8 +331,20 @@
 
 /* bootstrap forms */
 
+.form-group .li + .li {
+  margin-top: 5px;
+}
+
 .form-group .fc-multi {
   margin-bottom: 5px;
+}
+
+.form-group input.short {
+  max-width: 200px;
+}
+
+.form-group input.mid-length {
+  max-width: 400px;
 }
 
 /* bootstrap buttons */
