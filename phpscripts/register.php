@@ -6,18 +6,18 @@
         $name = $_GET['name'];
 	$email = $_GET['email'];
         $password = $_GET['password'];
- 	
-        $query = "INSERT INTO `user` (name, password, email) VALUES ('$name', '$password', '$email')";
-        $result = mysqli_query($connection, $query);
 
+ 	$salt = rand ( 0 , 1000 );
+	$password = $password . $salt;
 	$password = hash('sha512',$password);
+	
+        $query = "INSERT INTO `user` (name, password, email, salt) VALUES ('$name', '$password', '$email', '$salt')";
+        $result = mysqli_query($connection, $query);
+	
         if($result){
-		 $message = 'test';
 			echo "1";
 			//mail('ldengelman@gmail.com', 'My Subject', $message);
-        }
-		else
-		{
+        }else{
 			echo "-1";
 		}
     }
@@ -27,12 +27,14 @@
         $name = $_POST['name'];
 		$email = $_POST['email'];
         $password = $_POST['password'];
-        $password = hash('sha512',$password);
 
-        $query = "INSERT INTO `user` (name, password, email) VALUES ('$name', '$password', '$email')";
+	$salt = rand ( 0 , 1000 );
+	$password = $password . $salt;
+	$password = hash('sha512',$password);
+
+        $query = "INSERT INTO `user` (name, password, email, salt) VALUES ('$name', '$password', '$email', '$salt')";
         $result = mysqli_query($connection, $query);
         if($result){
-		$message = 'test';
 		//mail($email,'OneRoom Registration',$message);
 		echo "1";
         }

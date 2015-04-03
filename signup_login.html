@@ -39,7 +39,6 @@
 		var email = document.getElementById("lemail").value;
 		var pass = document.getElementById("lpass").value;
 		$.ajax({
-<<<<<<< HEAD
 			//url: 'http://104.254.216.237/oneroom/phpscripts/login.php?email='+email+'&password='+pass,
 			//dataType: "json",
 			url: 'phpscripts/login.php',
@@ -62,17 +61,6 @@
 				}else{
 					alert("No user with those credentials exists.");
 				}*/
-=======
-			url: 'http://104.254.216.237/oneroom/phpscripts/login.php?email='+email+'&password='+pass,
-			//dataType: "json",
-			success: function (response) {
-				if(response.localeCompare("You are logged in")==0){
-					document.cookie="user="+email;
-					location.href='index.html';
-				}else{
-					alert("No user with those credentials exists.");
-				}
->>>>>>> origin/master
 				
 		    },
 		    error: function(XMLHttpRequest, textStatus, errorThrown){
