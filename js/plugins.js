@@ -112,7 +112,8 @@ function createUtil(obj) {
 
   $.post(url);
 };
-function updateUtil(obj) {
+function updateUtil(obj, callback) {
+  if(typeof obj == 'function') { callback = obj; obj = {}; }
   obj.uID    = obj.uID    || getCookie('uID')    || 0;
   obj.utilID = obj.utilID || getCookie('utilID') || 0;
   obj.state  = obj.state  || 0;
@@ -123,16 +124,30 @@ function updateUtil(obj) {
   rem         += '&state='  + obj.state;
   var url      = super_bass + base_url + rem;
 
-  $.post(url);
+  $.post(url, callback);
 };
 
 // Place any jQuery/helper plugins in here.
 $(function() {
 
-  $("#menu-toggle").click(function(e) {
+  $('#menu-toggle').click(function(e) {
     e.preventDefault();
-    $("#wrapper").toggleClass("toggled");
+    $('#wrapper').toggleClass('toggled');
   });
 
-  $(".bs-switch").bootstrapSwitch();
+  $('.bs-switch').bootstrapSwitch();
+
+  $('.btn-add-option').click(function(e) {
+    e.preventDefault();
+    var $btn = $(e.target);
+    var num = $btn.parent().children('input').length + 1;
+    $btn.before('<input type="text" class="form-control fc-multi" id="option'+num+'" placeholder="Option '+num+'" value="">');
+  });
+
+  $('.btn-submit-new-device').click(function(e) {
+    e.preventDefault();
+    createUtil(function(a, b, c) {
+      console.log('a, b, c: ', a, b, c);
+    });
+  });
 });
