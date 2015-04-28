@@ -23,6 +23,7 @@
   <link rel="stylesheet" href="css/main.css">
 
   <script src="js/vendor/modernizr-2.6.2.min.js"></script>
+  <script src="js/jquery.js"></script>
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -98,22 +99,54 @@
               <input type="time" class="li form-control short" value="18:00">
               <span class="remove"><i class="fa fa-times"></i></span>
             </div>
-            <button class="li btn btn-default">Add</button>
+            <button class="li btn btn-default add-time">Add</button>
+            <script>
+              function removeHandler(e) {
+                $parent = $(e.target).parents('.li');
+                deleteSched($parent.attr('id'));
+                $parent.remove();
+              };
+              function changeHandler(e) {
+                var time = $(e.target).val();
+                time = time.substring(0,2) + time.substring(3,5);
+                updateEndSched({
+                  scheduleID: e.target.id,
+                  end: time
+                });
+              };
+
+              $(function () {
+                $('.add-time').click(function(e) {
+                  e.preventDefault();
+                  var $button = $(e.target);
+                  createSched({end: 1200}, function(id) {
+                    $('<div id="'+id+'" class="li"> <input type="time" class="li form-control short" value="12:00"> <span class="remove"><i class="fa fa-times"></i></span> </div>')
+                    .insertBefore($button);
+                    $('.remove').click(removeHandler);
+                    $('.li > input[type="time"]').change(changeHandler);
+                  });
+                });
+
+                $('.remove').click(removeHandler);
+                $('.li > input[type="time"]').change(changeHandler);
+              });
+            </script>
           </div>
           <div class="form-group">
             <label for="setting-type">Current Setting</label>
-            <!-- <select id="setting-type" class="form-control">
-              <option value="1">On/Off Switch</option>
-              <option value="2">State Dropdown</option>
-            </select> -->
             <br>
             <input class="bs-switch hidden" type="checkbox" name="lights-on" checked>
-            <!-- <select id="setting" class="form-control">
-              <option value="1">On</option>
-              <option value="2">Off</option>
-            </select> -->
+            <script>
+              $(function () {
+                $('.bs-switch').on('switchChange.bootstrapSwitch', function(e, on) {
+                  obj = {};
+                  obj.state = on ? 1 : 0;
+                  updateUtil(obj);
+                });
+              });
+            </script>
           </div>
-          <button type="submit" class="btn btn-default">Submit</button>
+          <button onclick="history.back();" type="submit" class="btn btn-default save">Submit</button>
           <a href="#" onclick="history.back();" class="btn btn-default">Cancel</a>
         </form>
       </div>
@@ -126,7 +159,6 @@
   <!-- scripts -->
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
   <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
-  <script src="js/jquery.js"></script>
   <script src="js/bootstrap.min.js"></script>
   <script src="js/bootstrap-switch.js"></script>
   <script src="js/plugins.js"></script>

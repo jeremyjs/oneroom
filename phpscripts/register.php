@@ -13,9 +13,10 @@
 	
         $query = "INSERT INTO `user` (name, password, email, salt) VALUES ('$name', '$password', '$email', '$salt')";
         $result = mysqli_query($connection, $query);
+		$id = mysqli_insert_id($connection);
 	
         if($result){
-			echo "1";
+			echo $id;
 			//mail('ldengelman@gmail.com', 'My Subject', $message);
         }else{
 			echo "-1";
@@ -34,9 +35,10 @@
 
         $query = "INSERT INTO `user` (name, password, email, salt) VALUES ('$name', '$password', '$email', '$salt')";
         $result = mysqli_query($connection, $query);
+		$id = mysqli_insert_id($connection);
         if($result){
 		//mail($email,'OneRoom Registration',$message);
-		echo "1";
+		echo $id;
         }
 		else
 		{
