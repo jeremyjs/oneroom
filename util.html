@@ -87,19 +87,14 @@
     <div id="page-content-wrapper">
       <div class="container-fluid">
         <div class="device-page">
-          <h1 class="header">Toggle Lights</h1>
+          <h1 class="header"><!-- title --></h1>
           <p class="subheader">
-            <strong>Scheduled Time:</strong>
-            <span class="scheduled-time">5:00pm</span>
-            <!-- <span class="scheduled-time">None</span> -->
+            <strong>Scheduled Times:</strong>
+            <!-- <span class="scheduled-time">5:00pm</span> -->
           </p>
-          <!-- <p class="subheader">
-            <strong>Current Setting:</strong>
-            <span class="current-setting">On</span>
-          </p> -->
           <div class="actions">
-            <a href="lights_edit.html" class="btn btn-default">Edit</a>
-            <input class="bs-switch hidden" type="checkbox" name="lights-on" checked>
+            <a href="util_edit.html" class="btn btn-default">Edit</a>
+            <input class="bs-switch hidden" type="checkbox" checked>
             <script>
               $(function () {
                 $('.bs-switch').on('switchChange.bootstrapSwitch', function(e, on) {
@@ -110,7 +105,7 @@
               });
             </script>
           </div>
-        </div>
+        </div> <!-- /.device-page -->
       </div>
     </div>
     <!-- /#page-content-wrapper -->
@@ -123,6 +118,18 @@
   <script src="js/bootstrap-switch.js"></script>
   <script src="js/plugins.js"></script>
   <script src="js/main.js"></script>
+  <script>
+  $(function() {
+    getUtil(function (util) {
+      var $container = $('.device-page');
+      $container.children('.header').html(util.title);
+      var $timesContainer = $container.children('.subheader');
+      util.scheduledTimes.forEach(function (time) {
+        $timesContainer.append('<span class="scheduled-time">'+time+'</span>');
+      });
+    });
+  });
+  </script>
   <script>
     (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
       function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
