@@ -136,6 +136,11 @@ function updateUtil(obj, callback) {
   $.post(url, callback);
 };
 
+function gotoUtil(id) {
+  setCookie('utilID', id);
+  location.href = 'util_edit.html';
+};
+
 // Place any jQuery/helper plugins in here.
 $(function() {
 

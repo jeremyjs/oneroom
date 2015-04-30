@@ -15,7 +15,7 @@ $(function() {
                       <p>Scheduled: '+util.firstSched+'</p>
                       <p>Setting: '+util.setting+'</p>
                       <div class="actions">
-                        <a class="btn btn-primary" href="util_edit.html" role="button">Edit</a>'
+                        <a class="btn btn-primary" href="javascript:gotoUtil('+util.id+')" role="button">Edit</a>'
                         +toggle+
                       '</div>
                     </div>
