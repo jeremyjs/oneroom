@@ -146,7 +146,14 @@ $(function() {
 
   $('.btn-submit-new-device').click(function(e) {
     e.preventDefault();
-    createUtil(function(a, b, c) {
+    var util = {};
+    util.title = $('#title').val();
+    util.options = [];
+    $('.setting-options').children('input').forEach(function ($input) {
+      var val = console.log('$input.val(): ', $input.val());
+      util.options.push(val);
+    });
+    createUtil(util, function(a, b, c) {
       console.log('a, b, c: ', a, b, c);
     });
   });

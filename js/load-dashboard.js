@@ -7,8 +7,8 @@ $(function() {
         $container.append('<div class="row"></div>');
         $currentRow = $container.children('.row').last();
       }
-      var toggle;
-      if(util.options == 2) toggle = '<input class="bs-switch hidden" type="checkbox" checked>';
+      var toggle = '<input class="bs-switch hidden" type="checkbox" checked>';
+      // if(util.options == 2) toggle = '<input class="bs-switch hidden" type="checkbox" checked>';
       var html = '<div class="col-lg-4 device">
                     <div class="jumbotron">
                       <h2>'+util.title+'</h2>
