@@ -1,5 +1,6 @@
 <?php
 	require_once 'connect.php';
+	session_start();
 
 	if (isset($_GET['email']) && isset($_GET['password'])) {
 		$email = $_GET['email'];
@@ -16,6 +17,7 @@
 		$count = mysqli_num_rows($result);
 
 		if ($count == 1){
+			$_SESSION["user"] = "true";
 			$array = mysqli_fetch_row($result);
 			echo json_encode($array);
 			//echo "You are logged in";
