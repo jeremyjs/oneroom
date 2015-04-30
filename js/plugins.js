@@ -112,6 +112,15 @@ function createUtil(obj) {
 
   $.post(url);
 };
+function getUtils(callback) {
+  var uID      = getCookie('uID') || 0;
+
+  var base_url = 'getUtils.php?';
+  var rem      = 'uID='     + uID;
+  var url      = super_bass + base_url + rem;
+
+  $.get(url, callback);
+};
 function updateUtil(obj) {
   obj.uID    = obj.uID    || getCookie('uID')    || 0;
   obj.utilID = obj.utilID || getCookie('utilID') || 0;
