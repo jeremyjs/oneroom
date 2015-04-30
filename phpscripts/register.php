@@ -1,7 +1,8 @@
 <?php
 
 	require('connect.php');
-	
+	session_start();	
+
 	if (isset($_GET['name']) && isset($_GET['password']) && isset($_GET['email'])){
         $name = $_GET['name'];
 	$email = $_GET['email'];
@@ -16,7 +17,9 @@
 		$id = mysqli_insert_id($connection);
 	
         if($result){
+			$_SESSION["user"] = "true";
 			echo $id;
+			
 			//mail('ldengelman@gmail.com', 'My Subject', $message);
         }else{
 			echo "-1";
