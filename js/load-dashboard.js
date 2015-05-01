@@ -5,7 +5,7 @@ $(function() {
     console.log('JSON.parse(utils): ', JSON.parse(utils));
     utils = JSON.parse(utils);
     var $container = $('#page-content-wrapper > .container-fluid');
-    var $currentRow;
+    var $currentRow = $container.children('.row').last();
 
     utils.forEach(function (util, index, utils) {
       util.id     = util[0];
@@ -33,7 +33,7 @@ $(function() {
 
         html +=         '<p class="setting">Setting: '+util.state+'</p>'+
                         '<div class="actions">'+
-                          '<a class="btn btn-primary" href="javascript:gotoUtil('+util.id+')" role="button">Edit</a>'+
+                          '<a class="btn btn-primary" href="javascript:gotoUtilEdit('+util.id+')" role="button">Edit</a>'+
                           '<input class="bs-switch hidden" type="checkbox" '+toggle+'>'+
                         '</div>'+
                       '</div>'+
@@ -56,6 +56,15 @@ $(function() {
       }); // getSchedules
 
     }); // forEach Util
+
+    if(utils.length == 0) {
+      console.log('test')
+      if(utils.length % 3 == 0) $container.append('<div class="row"></div>');
+      $currentRow = $container.children('.row').last();
+
+      var html = '<div class="col-lg-4 create-device"> <div class="jumbotron"> <div class="create-wrapper"> <div class="create"> <a href="util_new.html" class="black"><i class="fa fa-plus fa-5x"></i></a> </div> </div> </div> </div>';
+      $currentRow.append(html);
+    }
 
   });
 });

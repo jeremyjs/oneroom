@@ -124,12 +124,26 @@ function createUtil(obj, callback) {
 };
 function getUtil(utilID, callback) {
   if(typeof utilID == 'function') { callback = utilID; utilID = getCookie('utilID') || 0; }
+  console.log('utilID: ', utilID);
 
-  var base_url = 'getUtil.php?';
-  var rem      = 'userID='  + uID;
-  var url      = super_bass + base_url + rem;
+  // var base_url = 'getUtil.php?';
+  // var rem      = 'utilID='  + utilID;
+  // var url      = super_bass + base_url + rem;
 
-  $.get(url, callback);
+  getUtils(function(utils) {
+    utils = JSON.parse(utils);
+    utils.forEach(function (util) {
+      util.id     = util[0];
+      util.title  = util[1];
+      util.state  = util[2];
+      util.userID = util[3];
+      if(util.id == utilID) {
+        console.log('util: ', util);
+        callback(util);
+        return false;
+      }
+    });
+  });
 };
 function getUtils(callback) {
   var uID      = getCookie('uID') || 0;
@@ -155,6 +169,33 @@ function updateUtil(obj, callback) {
   console.log('url: ', url);
 
   $.post(url, callback);
+};
+function getUser(userID, callback) {
+  if(typeof userID == 'function') { callback = userID; userID = getCookie('uID') || 0; }
+  userID       = userID || getCookie('uID') || 0;
+  console.log('userID: ', userID);
+
+  var base_url = 'getUserInfo.php?';
+  var rem      = 'id='      + userID;
+  var url      = super_bass + base_url + rem;
+
+  $.get(url, callback);
+};
+function updateUser(user, callback) {
+  if(typeof user == 'function') { callback = user; user = {}; }
+  user.id       = user.id || getCookie('uID') || 0;
+
+  var base_url;
+  if(user.newPassword) base_url = 'editUser.php?';
+  else                 base_url = 'editUserNoPass.php?';
+
+  var rem = 'id='        + user.id;
+  rem    += '&name='     + user.name;
+  rem    += '&email='    + user.email;
+  rem    += '&password=' + user.password;
+  var url = super_bass   + base_url + rem;
+
+  $.get(url, callback);
 };
 
 function gotoUtil(id) {
@@ -198,6 +239,7 @@ function onSwitchChange(e, on) {
 };
 
 function loadSidebar() {
+  console.log('test')
   getUtils(function(utils) {
     utils = JSON.parse(utils);
     var $container = $('.sidebar-nav');
@@ -207,9 +249,9 @@ function loadSidebar() {
       util.title  = util[1];
       util.state  = util[2];
       util.userID = util[3];
-      var html = '<li> <a href="./util.html">'+util.title+'</a> </li>';
-      if(newDev) $(html).prependTo(newDev);
-      else       $container.append(html);
+      var html = '<li> <a href="./util_edit.html">'+util.title+'</a> </li>';
+      if(newDev.length > 0) $(html).prependTo(newDev);
+      else                  $container.append(html);
     });
   });
 };

@@ -33,67 +33,6 @@
 </head>
 
 <body>
- <script>
-
-  function login(){
-    var email = document.getElementById("lemail").value;
-    var pass = document.getElementById("lpass").value;
-    $.ajax({
-      //url: 'http://104.254.216.237/oneroom/phpscripts/login.php?email='+email+'&password='+pass,
-      //dataType: "json",
-      url: 'phpscripts/login.php',
-      type: 'get',
-      data: {'email':email, 'password':pass},
-      dataType: 'json',
-      success: function (response) {
-        var id = response[0];
-        var name = response[2];
-        var email = response[3];
-        //var password = response[4];
-        alert("id:" + id + " name:" + name + " email:" + email);
-        document.cookie="user="+email;
-        location.href='index.html';
-
-        /*if(response.localeCompare("You are logged in")==0){
-          alert(response);
-          document.cookie="user="+email;
-          //location.href='index.html';
-        }else{
-          alert("No user with those credentials exists.");
-        }*/
-
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-        //alert("Status: " + textStatus); alert("Error: " +errorThrown);
-        alert("Login Failed")
-        }
-    });
-  }
-
-  function signup(){
-    var name = document.getElementById("sname").value;
-    var email = document.getElementById("semail").value;
-    var pass = document.getElementById("spass").value;
-    $.ajax({
-      url: 'http://104.254.216.237/oneroom/phpscripts/register.php?name='+name+'&password='+pass+'&email='+email,
-
-      success: function (response) {
-        //if(parseInt(response)>=0){
-          alert("You are now Registered!");
-		  alert(response);
-          document.cookie="user="+email;
-          location.href='index.html';
-        /*} else{
-          alert("A user with that email already exists!");
-        }*/
-      },
-
-      error: function(XMLHttpRequest, textStatus, errorThrown){
-        alert("Status: " + textStatus); alert("Error: " + errorThrown);
-      }
-    });
-  }
-  </script>
   <div class="container">
     <div class="row">
       <div class="col-md-4 col-md-offset-4">
@@ -132,7 +71,6 @@
                 </div>
                 <div class="actions">
                   <input class="btn btn-default login" id='Login' type='button' value='Login' onclick="login();"></input>
-
                 </div>
               </form>
             </div>
@@ -151,6 +89,71 @@
   <script src="js/plugins.js"></script>
   <script src="js/main.js"></script>
   <script src="js/pages/signup_login.js"></script>
+  <script>
+  function login(){
+    var email = document.getElementById("lemail").value;
+    var pass = document.getElementById("lpass").value;
+    $.ajax({
+      //url: 'http://104.254.216.237/oneroom/phpscripts/login.php?email='+email+'&password='+pass,
+      //dataType: "json",
+      url: 'phpscripts/login.php',
+      type: 'get',
+      data: {'email':email, 'password':pass},
+      dataType: 'json',
+      success: function (response) {
+        var id = response[0];
+        var name = response[2];
+        var email = response[3];
+        //var password = response[4];
+        if(!id) {
+          $('.notice').html('incorrect username or password');
+          return;
+        }
+        alert("id:" + id + " name:" + name + " email:" + email);
+        setCookie('user', email);
+        setCookie('uID', id);
+        location.href='index.html';
+
+        /*if(response.localeCompare("You are logged in")==0){
+          alert(response);
+          document.cookie="user="+email;
+          //location.href='index.html';
+        }else{
+          alert("No user with those credentials exists.");
+        }*/
+
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+        //alert("Status: " + textStatus); alert("Error: " +errorThrown);
+        alert("Login Failed")
+        }
+    });
+  }
+
+  function signup(){
+    var name = document.getElementById("sname").value;
+    var email = document.getElementById("semail").value;
+    var pass = document.getElementById("spass").value;
+    $.ajax({
+      url: 'http://104.254.216.237/oneroom/phpscripts/register.php?name='+name+'&password='+pass+'&email='+email,
+
+      success: function (response) {
+        //if(parseInt(response)>=0){
+          alert("You are now Registered!");
+      alert(response);
+          document.cookie="user="+email;
+          location.href='index.html';
+        /*} else{
+          alert("A user with that email already exists!");
+        }*/
+      },
+
+      error: function(XMLHttpRequest, textStatus, errorThrown){
+        alert("Status: " + textStatus); alert("Error: " + errorThrown);
+      }
+    });
+  }
+  </script>
   <script>
     (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
       function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;

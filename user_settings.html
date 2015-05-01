@@ -63,10 +63,6 @@
             Connected Devices
           </a>
         </li>
-        <li> <a href="./lights.html">Toggle Lights</a> </li>
-        <!-- <li> <a href="#">Play Music</a> </li>
-        <li> <a href="#">Set Temp</a> </li>
-        <li> <a href="#">Security Cam</a> </li> -->
       </ul>
     </div>
     <!-- /#sidebar-wrapper -->
@@ -100,11 +96,11 @@
           </div>
           <div class="form-group">
             <label for="name">Name</label>
-            <input type="name" class="form-control" id="name" placeholder="Name" value="Robert Downey, Jr.">
+            <input type="name" class="form-control" id="name" placeholder="Name" value="">
           </div>
           <div class="form-group">
             <label for="email">Email</label>
-            <input type="email" class="form-control" id="email" placeholder="Email" value="no.1@starkindustries.net">
+            <input type="email" class="form-control" id="email" placeholder="Email" value="">
           </div>
           <div class="form-group">
             <label for="new-password">Change Password</label>
@@ -112,7 +108,7 @@
             <input type="password" class="form-control fc-multi" id="confirm-password" placeholder="Confirm Password">
             <input type="password" class="form-control fc-multi" id="old-password" placeholder="Old Password">
           </div>
-          <button type="submit" class="btn btn-default">Save</button>
+          <button type="submit" class="btn btn-default btn-save">Save</button>
           <a href="#" onclick="history.back();" class="btn btn-default">Cancel</a>
         </form>
       </div>
@@ -130,6 +126,34 @@
   <script src="js/bootstrap-switch.js"></script>
   <script src="js/plugins.js"></script>
   <script src="js/main.js"></script>
+  <script>
+  $(function() {
+    getUser(function(user) {
+      user = JSON.parse(user);
+      var name = user[2];
+      var email = user[3];
+      console.log('user: ', user);
+      $('#name').val(name);
+      $('#email').val(email);
+    });
+
+    $('.btn-save').click(function(e) {
+      e.preventDefault();
+      var user         = {}
+      user.name        = $('#name').val();
+      user.email       = $('#email').val();
+      user.newPass     = $('#new-password').val();
+      user.confirmPass = $('#confirm-password').val();
+      user.oldPass     = $('#old-password').val();
+      if(user.newPass != user.confirmPass) alert('new password and confirm password must match');
+      else {
+        updateUser(user, function() {
+          location.reload();
+        });
+      }
+    });
+  });
+  </script>
   <script>
     (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
       function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;

@@ -83,7 +83,7 @@
         <form>
           <div class="form-group">
             <label for="title">Device/Action Title</label>
-            <input type="text" class="form-control mid-length" id="title" placeholder="Enter Device/Action Title" value="Toggle Lights">
+            <input type="text" class="form-control mid-length" id="title" placeholder="Enter Device/Action Title" value="">
           </div>
           <div class="form-group form-inline">
             <label>Scheduled Times</label>
@@ -94,8 +94,8 @@
             <br>
             <input class="bs-switch hidden" type="checkbox" checked>
           </div>
-          <button onclick="history.back();" type="submit" class="btn btn-default save">Submit</button>
-          <a href="#" onclick="history.back();" class="btn btn-default">Cancel</a>
+          <!-- <button onclick="history.back();" type="submit" class="btn btn-default save">Submit</button> -->
+          <!-- <a href="#" onclick="history.back();" class="btn btn-default">Cancel</a> -->
         </form>
       </div>
     </div>
@@ -156,6 +156,11 @@
 
       $('.remove').click(removeHandler);
       $('.li > input[type="time"]').change(changeHandler);
+
+      getUtil(function(util) {
+        console.log('util: ', util);
+        $('#title').val(util.title);
+      });
 
       getSchedules(function(schedules) {
         schedules = JSON.parse(schedules)
