@@ -1,8 +1,9 @@
 <?php
   require('connect.php');
 
-  if (isset($_GET['utilName']) && isset($_GET['state']))
+  if (isset($_GET['userID']) && isset($_GET['utilName']) && isset($_GET['state']))
   {
+    $userID  = $_GET['userID'];
     $utilName = $_GET['utilName'];
     $state  = $_GET['state'];
 
@@ -11,20 +12,27 @@
 
     if($result){
       echo "1";
-      if ($state == 1) {
-        $payload = file_get_contents('http://104.254.216.237/oneroom/phpscripts/client.php?action=play/example');
+
+      if ($userID == 1) {
+        if ($utilName == 'Lights' && $state == '1') {
+          $payload = file_get_contents('http://104.254.216.237/oneroom/phpscripts/client.php?action=on/Lights');
+        }
+        else if ($utilName == 'Lights' && $state == '0') {
+          $payload = file_get_contents('http://104.254.216.237/oneroom/phpscripts/client.php?action=off/Lights');
+        }
+        else if ($utilName == 'Speakers' && $state == '1') {
+          $payload = file_get_contents('http://104.254.216.237/oneroom/phpscripts/client.php?action=play/short');
+        }
       }
-      else {
-        //$payload = file_get_contents('http://104.254.216.237/oneroom/phpscripts/client.php?action=play/example');
-      }
-      
-    } else {
+    }
+    else {
       echo "-1";
     }
   }
 
-  if (isset($_POST['utilName']) && isset($_POST['state']))
+  if (isset($_POST['userID']) && isset($_POST['utilName']) && isset($_POST['state']))
   {
+    $userID  = $_POST['userID'];
    	$utilName = $_POST['utilName'];
     $state  = $_POST['state'];
 
@@ -33,7 +41,18 @@
 
     if($result){
       echo "1";
-      $payload = file_get_contents('http://104.254.216.237/oneroom/phpscripts/client.php?action=play/example');
+      
+      if ($userID == 1) {
+        if ($utilName == 'Lights' && $state == '1') {
+          $payload = file_get_contents('http://104.254.216.237/oneroom/phpscripts/client.php?action=on/Lights');
+        }
+        else if ($utilName == 'Lights' && $state == '0') {
+          $payload = file_get_contents('http://104.254.216.237/oneroom/phpscripts/client.php?action=off/Lights');
+        }
+        else if ($utilName == 'Speakers' && $state == '1') {
+          $payload = file_get_contents('http://104.254.216.237/oneroom/phpscripts/client.php?action=play/short');
+        }
+      }
     } else {
       echo "-1";
     }

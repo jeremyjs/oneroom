@@ -17,10 +17,16 @@ createUtil.php
 http://104.254.216.237/oneroom/phpscripts/createUtil.php?utilName=speakerss&state=0
 
 getUtils.php
-http://104.254.216.237/oneroom/phpscripts/getUtils.php
+http://104.254.216.237/oneroom/phpscripts/getUtils.php?getUtils=1
+
+
+
 
 editUser.php
-http://104.254.216.237/oneroom/phpscripts/editUser.php?id=10&name=zesty&email=z@1
+http://104.254.216.237/oneroom/phpscripts/editUser.php?id=10&name=zesty&email=z@1.
+
+
+
 
 editUserNoPass.php
 http://104.254.216.237/oneroom/phpscripts/editUserNoPass.php?id=10&name=zesty&email=z@1

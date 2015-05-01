@@ -46,20 +46,18 @@ function getCookie(cname) {
 
 var super_bass = '/oneroom/phpscripts/';
 
-function createSched(obj) {
-  obj.uID    = obj.uID    || getCookie('uID')    || 0;
+function createSched(obj, callback) {
   obj.utilID = obj.utilID || getCookie('utilID') || 0;
-  obj.begin  = obj.begin  || 0;
-  obj.end    = obj.end    || 0;
+  obj.time   = obj.time   || '1200';
+  obj.state  = obj.state  || 0;
 
   var base_url = 'createSched.php?';
-  var rem      = 'uID='     + obj.uID;
-  rem         += '&utilID=' + obj.utilID;
-  rem         += '&begin='  + obj.begin;
-  rem         += '&end='    + obj.end;
+  var rem      = 'utilID='  + obj.utilID;
+  rem         += '&time='   + obj.time;
+  rem         += '&state='  + obj.state;
   var url      = super_bass + base_url + rem;
 
-  $.post(url);
+  $.post(url, callback);
 };
 function deleteSched(obj) {
   if(typeof(obj) !== 'object') {
@@ -74,25 +72,20 @@ function deleteSched(obj) {
 
   $.post(url);
 };
-function updateBegSched(obj) {
-  obj.scheduleID = obj.scheduleID || 0;
-  obj.begin      = obj.begin      || 0;
+function updateSched(obj) {
+  obj.id     = obj.id    || 0;
+  obj.utilID = getCookie('utilID') || obj.utilID || 0;
+  obj.state  = obj.state || 0;
+  obj.time   = obj.time  || '1200';
 
-  var base_url = 'updateBegSched.php?';
-  var rem      = 'scheduleID=' + obj.scheduleID;
-  rem         += '&begin='     + obj.begin;
+  var base_url = 'updateSched.php?';
+  var rem      = 'scheduleID=' + obj.id;
+  rem         += '&utilID='    + obj.utilID;
+  rem         += '&state='     + obj.state;
+  rem         += '&time='      + obj.time;
   var url      = super_bass + base_url + rem;
 
-  $.post(url);
-};
-function updateEndSched(obj) {
-  obj.scheduleID = obj.scheduleID || 0;
-  obj.end        = obj.end        || 0;
-
-  var base_url = 'updateEndSched.php?';
-  var rem      = 'scheduleID=' + obj.scheduleID;
-  rem         += '&end='       + obj.end;
-  var url      = super_bass + base_url + rem;
+  console.log('url: ', url);
 
   $.post(url);
 };
@@ -129,6 +122,15 @@ function createUtil(obj, callback) {
 
   $.post(url, callback);
 };
+function getUtil(utilID, callback) {
+  if(typeof utilID == 'function') { callback = utilID; utilID = getCookie('utilID') || 0; }
+
+  var base_url = 'getUtil.php?';
+  var rem      = 'userID='  + uID;
+  var url      = super_bass + base_url + rem;
+
+  $.get(url, callback);
+};
 function getUtils(callback) {
   var uID      = getCookie('uID') || 0;
 
@@ -157,21 +159,59 @@ function updateUtil(obj, callback) {
 
 function gotoUtil(id) {
   setCookie('utilID', id);
+  location.href = 'util.html';
+};
+
+function gotoUtilEdit(id) {
+  setCookie('utilID', id);
   location.href = 'util_edit.html';
 };
 
 function onSwitchChange(e, on) {
   var tar = $(e.target);
-  var par = tar.parents('.util');
+  var par = tar.parents('.sched');
+  if(par.length == 0) par = tar.parents('.util');
   obj = {};
-  obj.title = par.find('.title').html();
+
+  console.log('par: ', par);
+  obj.id = par.attr('id');
+
+  var $title = par.find('.title');
+  obj.title = ($title.length > 0) ? $title.html() : null;
+
+  var $time = par.find('.time');
+  if($time.length > 0) {
+    obj.time = $time.val();
+    obj.time = obj.time.substring(0,2) + obj.time.substring(3,5);
+  }
+
   obj.state = on ? 1 : 0;
   if(par) obj.utilID = par.attr('id');
   console.log('updating switch: ', obj);
   var set = 'Setting: ' + (on ? 'On' : 'Off');
   par.find('.setting').html(set);
 
-  updateUtil(obj);
+  console.log('obj: ', obj);
+
+  if(obj.title)     updateUtil(obj);
+  else if(obj.time) updateSched(obj);
+};
+
+function loadSidebar() {
+  getUtils(function(utils) {
+    utils = JSON.parse(utils);
+    var $container = $('.sidebar-nav');
+    var newDev = $('.new-device-link');
+    utils.forEach(function (util, index, utils) {
+      util.id     = util[0];
+      util.title  = util[1];
+      util.state  = util[2];
+      util.userID = util[3];
+      var html = '<li> <a href="./util.html">'+util.title+'</a> </li>';
+      if(newDev) $(html).prependTo(newDev);
+      else       $container.append(html);
+    });
+  });
 };
 
 // Place any jQuery/helper plugins in here.
@@ -183,7 +223,6 @@ $(function() {
   });
 
   $('.bs-switch').bootstrapSwitch();
-
   $('.bs-switch').on('switchChange.bootstrapSwitch', onSwitchChange);
 
   $('.btn-add-option').click(function(e) {
@@ -209,5 +248,7 @@ $(function() {
       location.href = './index.html';
     });
   });
+
+  loadSidebar();
 
 });

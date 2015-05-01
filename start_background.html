@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
@@ -24,12 +25,23 @@
 
 <body>
  <script>
+ 
+ function startChecking() {
+	setInterval(function () {checkLightSchedule()}, 60000);
+  setInterval(function () {checkSpeakerSchedule()}, 60000);
+ }
 
-  function checkSchedule(){
+  function checkLightSchedule(){
 	
-	alert("starting");
+	//alert("starting");
   
 	var utilID = 1;
+	var userID = 1;
+	var utilName = "Lights";
+	var d = new Date();
+	var n = d.getTime();
+	var curTime = d.getHours() * 100 + d.getMinutes();
+	//alert("curtime: " + curTime);
     $.ajax({
       
       url: 'phpscripts/getSchedules.php',
@@ -41,7 +53,24 @@
             var schedID = response[i][0];
             var time = response[i][1];
             var state = response[i][2];
-            alert("schedID:" + schedID + " time:" + time + " state:" + state);
+            //alert("schedID:" + schedID + " time:" + time + " state:" + state);
+			
+			if(time == curTime) {
+				//alert("Sending change state request");
+				$.ajax({
+				url: 'phpscripts/changeState.php',
+				type: 'get',
+				data: {'utilName':utilName, 'userID':userID, 'state':state},
+				dataType: 'json',
+				//success: function (resp) {
+				//	
+				//},
+				error: function(XMLHttpRequest, textStatus, errorThrown) {
+					alert("Error sending changeState request");
+					}
+				});
+			}
+			
           }
         },
         error: function(XMLHttpRequest, textStatus, errorThrown){
@@ -51,6 +80,57 @@
     });
 	
 	//alert("done");
+  }
+
+  function checkSpeakerSchedule(){
+  
+  //alert("starting");
+  
+  var utilID = 2;
+  var userID = 1;
+  var utilName = "Speakers";
+  var d = new Date();
+  var n = d.getTime();
+  var curTime = d.getHours() * 100 + d.getMinutes();
+  //alert("curtime: " + curTime);
+    $.ajax({
+      
+      url: 'phpscripts/getSchedules.php',
+      type: 'get',
+      data: {'utilID':utilID},
+      dataType: 'json',
+      success: function (response) {
+          for (var i=0; i < response.length; i++) {
+            var schedID = response[i][0];
+            var time = response[i][1];
+            var state = response[i][2];
+            //alert("schedID:" + schedID + " time:" + time + " state:" + state);
+      
+      if(time == curTime) {
+        //alert("Sending change state request");
+        $.ajax({
+        url: 'phpscripts/changeState.php',
+        type: 'get',
+        data: {'utilName':utilName, 'userID':userID, 'state':state},
+        dataType: 'json',
+        //success: function (resp) {
+        //  
+        //},
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+          alert("Error sending changeState request");
+          }
+        });
+      }
+      
+          }
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+        //alert("Status: " + textStatus); alert("Error: " +errorThrown);
+        //alert("Schedule Retrieving Failed");
+        }
+    });
+  
+  //alert("done");
   }
 
   </script>
@@ -67,7 +147,7 @@
               
               <form class="form login">
                 <div class="actions">
-                  <input class="btn btn-default start" id='Start' type='button' value='Start' onclick="checkSchedule();"></input>
+                  <input class="btn btn-default start" id='Start' type='button' value='Start' onclick="startChecking();"></input>
 
                 </div>
               </form>
