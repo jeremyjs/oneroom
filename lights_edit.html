@@ -91,6 +91,14 @@
           </div>
           <div class="form-group form-inline">
             <label>Scheduled Times</label>
+            <div class="li">
+              <input type="time" class="form-control short" value="17:00">
+              <span class="remove"><i class="fa fa-times"></i></span>
+            </div>
+            <div class="li">
+              <input type="time" class="li form-control short" value="18:00">
+              <span class="remove"><i class="fa fa-times"></i></span>
+            </div>
             <button class="li btn btn-default add-time">Add</button>
             <script>
               function removeHandler(e) {
@@ -99,7 +107,6 @@
                 $parent.remove();
               };
               function changeHandler(e) {
-                console.log('e: ', e);
                 var time = $(e.target).val();
                 time = time.substring(0,2) + time.substring(3,5);
                 updateEndSched({
@@ -122,25 +129,6 @@
 
                 $('.remove').click(removeHandler);
                 $('.li > input[type="time"]').change(changeHandler);
-
-                getSchedules(function(schedules) {
-                  schedules = JSON.parse(schedules)
-                  schedules.forEach(function (sched) {
-                    console.log('sched: ', sched);
-                    sched.id     = sched[0];
-                    sched.time   = sched[1];
-                    console.log(sched);
-                    sched.time   = sched.time ? sched.time.splice(2, 0, ':') : null;
-                    sched.state  = sched[2];
-                    var html = '<div class="li sched" id="'+sched.id+'">'+
-                      '<input type="time" class="li form-control short" value="'+sched.time+'">'+
-                      '<span class="remove"><i class="fa fa-times"></i></span>'+
-                    '</div>';
-                    $('.add-time').before(html);
-                    $('.remove').click(removeHandler);
-                    $('.li > input[type="time"]').change(changeHandler);
-                  });
-                });
               });
             </script>
           </div>

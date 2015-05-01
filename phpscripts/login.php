@@ -23,7 +23,7 @@
 			//echo "You are logged in";
 		}else {
 			//$msg = "User Logged in Failed.";
-			echo "Login Failed";
+			echo "-1";
 		}
 	}
 
@@ -47,7 +47,7 @@
 			echo json_encode($array);
 		}else {
 			$msg = "-1";
-			echo "Login Failed";
+			echo "-1";
 			
 		}
 	}

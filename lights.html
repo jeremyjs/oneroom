@@ -23,6 +23,8 @@
   <link rel="stylesheet" href="css/main.css">
 
   <script src="js/vendor/modernizr-2.6.2.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
   <script src="js/jquery.js"></script>
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -84,69 +86,19 @@
     <!-- Page Content -->
     <div id="page-content-wrapper">
       <div class="container-fluid">
-        <form>
-          <div class="form-group">
-            <label for="title">Device/Action Title</label>
-            <input type="text" class="form-control mid-length" id="title" placeholder="Enter Device/Action Title" value="Toggle Lights">
-          </div>
-          <div class="form-group form-inline">
-            <label>Scheduled Times</label>
-            <button class="li btn btn-default add-time">Add</button>
-            <script>
-              function removeHandler(e) {
-                $parent = $(e.target).parents('.li');
-                deleteSched($parent.attr('id'));
-                $parent.remove();
-              };
-              function changeHandler(e) {
-                console.log('e: ', e);
-                var time = $(e.target).val();
-                time = time.substring(0,2) + time.substring(3,5);
-                updateEndSched({
-                  scheduleID: e.target.id,
-                  end: time
-                });
-              };
-
-              $(function () {
-                $('.add-time').click(function(e) {
-                  e.preventDefault();
-                  var $button = $(e.target);
-                  createSched({end: 1200}, function(id) {
-                    $('<div id="'+id+'" class="li"> <input type="time" class="li form-control short" value="12:00"> <span class="remove"><i class="fa fa-times"></i></span> </div>')
-                    .insertBefore($button);
-                    $('.remove').click(removeHandler);
-                    $('.li > input[type="time"]').change(changeHandler);
-                  });
-                });
-
-                $('.remove').click(removeHandler);
-                $('.li > input[type="time"]').change(changeHandler);
-
-                getSchedules(function(schedules) {
-                  schedules = JSON.parse(schedules)
-                  schedules.forEach(function (sched) {
-                    console.log('sched: ', sched);
-                    sched.id     = sched[0];
-                    sched.time   = sched[1];
-                    console.log(sched);
-                    sched.time   = sched.time ? sched.time.splice(2, 0, ':') : null;
-                    sched.state  = sched[2];
-                    var html = '<div class="li sched" id="'+sched.id+'">'+
-                      '<input type="time" class="li form-control short" value="'+sched.time+'">'+
-                      '<span class="remove"><i class="fa fa-times"></i></span>'+
-                    '</div>';
-                    $('.add-time').before(html);
-                    $('.remove').click(removeHandler);
-                    $('.li > input[type="time"]').change(changeHandler);
-                  });
-                });
-              });
-            </script>
-          </div>
-          <div class="form-group">
-            <label for="setting-type">Current Setting</label>
-            <br>
+        <div class="device-page">
+          <h1 class="header">Toggle Lights</h1>
+          <p class="subheader">
+            <strong>Scheduled Time:</strong>
+            <span class="scheduled-time">5:00pm</span>
+            <!-- <span class="scheduled-time">None</span> -->
+          </p>
+          <!-- <p class="subheader">
+            <strong>Current Setting:</strong>
+            <span class="current-setting">On</span>
+          </p> -->
+          <div class="actions">
+            <a href="lights_edit.html" class="btn btn-default">Edit</a>
             <input class="bs-switch hidden" type="checkbox" name="lights-on" checked>
             <script>
               $(function () {
@@ -158,9 +110,7 @@
               });
             </script>
           </div>
-          <button onclick="history.back();" type="submit" class="btn btn-default save">Submit</button>
-          <a href="#" onclick="history.back();" class="btn btn-default">Cancel</a>
-        </form>
+        </div>
       </div>
     </div>
     <!-- /#page-content-wrapper -->
@@ -169,8 +119,6 @@
   <!-- /#wrapper -->
 
   <!-- scripts -->
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-  <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
   <script src="js/bootstrap.min.js"></script>
   <script src="js/bootstrap-switch.js"></script>
   <script src="js/plugins.js"></script>

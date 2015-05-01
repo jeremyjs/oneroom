@@ -1,0 +1,99 @@
+﻿<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+  <title>OneRoom Home Automation System</title>
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+
+<body>
+ <script>
+
+  function checkSchedule(){
+	
+	alert("starting");
+  
+	var utilID = 1;
+    $.ajax({
+      
+      url: 'phpscripts/getSchedules.php',
+      type: 'get',
+      data: {'utilID':utilID},
+      dataType: 'json',
+      success: function (response) {
+          for (var i=0; i < response.length; i++) {
+            var schedID = response[i][0];
+            var time = response[i][1];
+            var state = response[i][2];
+            alert("schedID:" + schedID + " time:" + time + " state:" + state);
+          }
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+        //alert("Status: " + textStatus); alert("Error: " +errorThrown);
+        //alert("Schedule Retrieving Failed");
+        }
+    });
+	
+	//alert("done");
+  }
+
+  </script>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4 col-md-offset-4">
+        <div class="login-container">
+          <ul class="nav nav-tabs">
+      
+          </ul>
+          <div class="panel panel-default tab-panel">
+            <div class="panel-body">
+              <p class="notice"></p>
+              
+              <form class="form login">
+                <div class="actions">
+                  <input class="btn btn-default start" id='Start' type='button' value='Start' onclick="checkSchedule();"></input>
+
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- scripts -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
+  <script src="js/jquery.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/bootstrap-switch.js"></script>
+  <script src="js/plugins.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/pages/signup_login.js"></script>
+  <script>
+    (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+      function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+    e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+    e.src='//www.google-analytics.com/analytics.js';
+    r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+    ga('create','UA-XXXXX-X');ga('send','pageview');
+  </script>
+</body>
+</html>

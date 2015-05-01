@@ -21,6 +21,12 @@
   }
 }());
 
+(function() {
+  String.prototype.splice = function( idx, rem, s ) {
+      return (this.slice(0,idx) + s + this.slice(idx + Math.abs(rem)));
+  };
+}());
+
 function setCookie(cname, cvalue, exdays) {
   var d = new Date();
   d.setTime(d.getTime() + (exdays*24*60*60*1000));
@@ -90,6 +96,16 @@ function updateEndSched(obj) {
 
   $.post(url);
 };
+function getSchedules(obj, callback) {
+  if(typeof obj == 'function') { callback = obj; obj = {}; }
+  var utilID   = getCookie('utilID') || obj.id || 0;
+
+  var base_url = 'getSchedules.php?';
+  var rem      = 'utilID='  + utilID;
+  var url      = super_bass + base_url + rem;
+
+  $.get(url, callback);
+};
 function updateUtilSched(obj) {
   obj.scheduleID = obj.scheduleID || 0;
   obj.utilID     = obj.utilID     || getCookie('utilID') || 0;
@@ -101,22 +117,23 @@ function updateUtilSched(obj) {
 
   $.post(url);
 };
-function createUtil(obj) {
+function createUtil(obj, callback) {
   obj.uID   = obj.uID    || getCookie('uID') || 0;
   obj.state = obj.state  || 0;
 
   var base_url = 'createUtil.php?';
-  var rem      = 'uID='     + obj.uID;
-  rem         += '&state='  + obj.state;
-  var url      = super_bass + base_url + rem;
+  var rem      = 'userID='    + obj.uID;
+  rem         += '&state='    + obj.state;
+  rem         += '&utilName=' + obj.title;
+  var url      = super_bass   + base_url + rem;
 
-  $.post(url);
+  $.post(url, callback);
 };
 function getUtils(callback) {
   var uID      = getCookie('uID') || 0;
 
   var base_url = 'getUtils.php?';
-  var rem      = 'uID='     + uID;
+  var rem      = 'userID='  + uID;
   var url      = super_bass + base_url + rem;
 
   $.get(url, callback);
@@ -128,10 +145,12 @@ function updateUtil(obj, callback) {
   obj.state  = obj.state  || 0;
 
   var base_url = 'updateUtil.php?';
-  var rem      = 'uID='     + obj.uID;
-  rem         += '&utilID=' + obj.utilID;
-  rem         += '&state='  + obj.state;
-  var url      = super_bass + base_url + rem;
+  var rem      = 'utilID='    + obj.utilID;
+  rem         += '&utilName=' + obj.title;
+  rem         += '&state='    + obj.state;
+  var url      = super_bass   + base_url + rem;
+
+  console.log('url: ', url);
 
   $.post(url, callback);
 };
@@ -139,6 +158,20 @@ function updateUtil(obj, callback) {
 function gotoUtil(id) {
   setCookie('utilID', id);
   location.href = 'util_edit.html';
+};
+
+function onSwitchChange(e, on) {
+  var tar = $(e.target);
+  var par = tar.parents('.util');
+  obj = {};
+  obj.title = par.find('.title').html();
+  obj.state = on ? 1 : 0;
+  if(par) obj.utilID = par.attr('id');
+  console.log('updating switch: ', obj);
+  var set = 'Setting: ' + (on ? 'On' : 'Off');
+  par.find('.setting').html(set);
+
+  updateUtil(obj);
 };
 
 // Place any jQuery/helper plugins in here.
@@ -151,7 +184,10 @@ $(function() {
 
   $('.bs-switch').bootstrapSwitch();
 
+  $('.bs-switch').on('switchChange.bootstrapSwitch', onSwitchChange);
+
   $('.btn-add-option').click(function(e) {
+    console.log('add-option');
     e.preventDefault();
     var $btn = $(e.target);
     var num = $btn.parent().children('input').length + 1;
@@ -162,13 +198,16 @@ $(function() {
     e.preventDefault();
     var util = {};
     util.title = $('#title').val();
-    util.options = [];
-    $('.setting-options').children('input').forEach(function ($input) {
-      var val = console.log('$input.val(): ', $input.val());
-      util.options.push(val);
-    });
-    createUtil(util, function(a, b, c) {
-      console.log('a, b, c: ', a, b, c);
+    var state = $('.bs-switch').val() == 'on' ? 1 : 0;
+    // util.options = [];
+    // $('.setting-options').children('input').each(function (index, input) {
+    //   var val = $(input).val();
+    //   util.options.push(val);
+    // });
+    createUtil(util, function(utilID, message, response) {
+      //gotoUtil(utilID);
+      location.href = './index.html';
     });
   });
+
 });

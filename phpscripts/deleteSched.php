@@ -21,7 +21,7 @@
         $scheduleID = $_POST['scheduleID'];
 
 	
-        $query = "DELETE FROM `schedules` (scheduleID) VALUES ('$scheduleID')";
+        $query = "DELETE FROM `schedules` WHERE scheduleID = $scheduleID";
         $result = mysqli_query($connection, $query);
 	
         if($result){

@@ -55,7 +55,7 @@
             Connected Devices
           </a>
         </li>
-        <li> <a href="./lights.html" class="active">Toggle Lights</a> </li>
+        <li> <a href="./util.html" class="active">Toggle Lights</a> </li>
         <!-- <li> <a href="#">Play Music</a> </li>
         <li> <a href="#">Set Temp</a> </li>
         <li> <a href="#">Security Cam</a> </li> -->
@@ -95,15 +95,6 @@
           <div class="actions">
             <a href="util_edit.html" class="btn btn-default">Edit</a>
             <input class="bs-switch hidden" type="checkbox" checked>
-            <script>
-              $(function () {
-                $('.bs-switch').on('switchChange.bootstrapSwitch', function(e, on) {
-                  obj = {};
-                  obj.state = on ? 1 : 0;
-                  updateUtil(obj);
-                });
-              });
-            </script>
           </div>
         </div> <!-- /.device-page -->
       </div>
