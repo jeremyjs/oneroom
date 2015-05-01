@@ -80,7 +80,7 @@
     <!-- Page Content -->
     <div id="page-content-wrapper">
       <div class="container-fluid">
-        <form>
+        <form class="util">
           <div class="form-group">
             <label for="title">Device/Action Title</label>
             <input type="text" class="form-control mid-length" id="title" placeholder="Enter Device/Action Title" value="">
@@ -89,10 +89,9 @@
             <label>Scheduled Times</label>
             <button class="li btn btn-default add-time">Add</button>
           </div>
-          <div class="form-group">
+          <div class="form-group setting">
             <label for="setting-type">Current Setting</label>
             <br>
-            <input class="bs-switch hidden" type="checkbox" checked>
           </div>
           <!-- <button onclick="history.back();" type="submit" class="btn btn-default save">Submit</button> -->
           <!-- <a href="#" onclick="history.back();" class="btn btn-default">Cancel</a> -->
@@ -122,21 +121,33 @@
       var tar  = $(e.target);
 
       var time = tar.val();
-      var id  = tar.parents('.sched').attr('id');
+      var id   = tar.parents('.sched').attr('id');
       time = time.substring(0,2) + time.substring(3,5);
       updateSched({
         id: id,
         time: time
       });
     };
+    function changeTitleHandler(e) {
+      console.log('change title e: ', e);
+      var tar  = $(e.target);
+
+      var title = tar.val();
+      var state = $('#state').val();
+
+      var util = {
+        title: title,
+        state: state
+      };
+
+      console.log('util: ', util);
+
+      updateUtil(util);
+    };
+
+    $('#title').change(changeTitleHandler);
 
     $(function () {
-
-      $('.bs-switch').on('switchChange.bootstrapSwitch', function(e, on) {
-        obj = {};
-        obj.state = on ? 1 : 0;
-        updateUtil(obj);
-      });
 
       $('.add-time').click(function(e) {
         e.preventDefault();
@@ -146,11 +157,13 @@
           console.log('id: ', id);
           $('<div id="'+id+'" class="li sched"> <input type="time" class="li time form-control short" value="12:00"> <span> <input class="bs-switch hidden" type="checkbox" checked> </span> <span class="remove"><i class="fa fa-times"></i></span> </div>')
           .insertBefore($button);
-          $('.remove').click(removeHandler);
-          $('.li > input[type="time"]').change(changeHandler);
+          var par = $('.sched#'+id);
+          console.log('par: ', par);
+          par.find('.remove').click(removeHandler);
+          par.find('.li > input[type="time"]').change(changeHandler);
 
-          $('.bs-switch').bootstrapSwitch();
-          $('.bs-switch').on('switchChange.bootstrapSwitch', onSwitchChange);
+          par.find('.bs-switch').bootstrapSwitch();
+          par.find('.bs-switch').on('switchChange.bootstrapSwitch', onSwitchChange);
         });
       });
 
@@ -159,7 +172,13 @@
 
       getUtil(function(util) {
         console.log('util: ', util);
+        // $('.util').val(util.id);
         $('#title').val(util.title);
+        var c = (util.state == 1) ? 'checked' : '';
+        var html = '<input class="bs-switch glob hidden" type="checkbox" '+c+'>';
+        $('.setting').append(html);
+        $('.bs-switch').bootstrapSwitch();
+        $('.glob').on('switchChange.bootstrapSwitch', onUtilSwitchChange);
       });
 
       getSchedules(function(schedules) {
@@ -178,11 +197,13 @@
             '<span class="remove"><i class="fa fa-times"></i></span>'+
           '</div>';
           $('.add-time').before(html);
-          $('.remove').click(removeHandler);
-          $('.li > input[type="time"]').change(changeHandler);
+          var par = $('.sched#'+sched.id);
+          console.log('par: ', par);
+          par.find('.remove').click(removeHandler);
+          par.find('.time').change(changeHandler);
 
-          $('.bs-switch').bootstrapSwitch();
-          $('.bs-switch').on('switchChange.bootstrapSwitch', onSwitchChange);
+          par.find('.bs-switch').bootstrapSwitch();
+          par.find('.bs-switch').on('switchChange.bootstrapSwitch', onSwitchChange);
         });
       });
 

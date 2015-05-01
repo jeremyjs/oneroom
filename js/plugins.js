@@ -210,8 +210,9 @@ function gotoUtilEdit(id) {
 
 function onSwitchChange(e, on) {
   var tar = $(e.target);
+  console.log('tar: ', tar);
   var par = tar.parents('.sched');
-  if(par.length == 0) par = tar.parents('.util');
+  if(par.length == 0 || tar.hasClass('glob')) par = tar.parents('.util');
   obj = {};
 
   console.log('par: ', par);
@@ -234,8 +235,22 @@ function onSwitchChange(e, on) {
 
   console.log('obj: ', obj);
 
-  if(obj.title)     updateUtil(obj);
-  else if(obj.time) updateSched(obj);
+  if(par.hasClass('util')) updateUtil(obj);
+  else                     updateSched(obj);
+};
+
+function onUtilSwitchChange(e, on) {
+  var tar = $(e.target);
+
+  obj = {};
+
+  obj.id    = tar.attr('id');
+  obj.title = $('#title').val();
+  obj.state = on ? 1 : 0;
+
+  console.log('obj: ', obj);
+
+  updateUtil(obj);
 };
 
 function loadSidebar() {
@@ -249,7 +264,7 @@ function loadSidebar() {
       util.title  = util[1];
       util.state  = util[2];
       util.userID = util[3];
-      var html = '<li> <a href="./util_edit.html">'+util.title+'</a> </li>';
+      var html = '<li> <a href="javascript:gotoUtilEdit('+util.id+')">'+util.title+'</a> </li>';
       if(newDev.length > 0) $(html).prependTo(newDev);
       else                  $container.append(html);
     });
